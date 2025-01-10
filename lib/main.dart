@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:realstate/UI/screens/BookingScreen.dart';
 import 'package:realstate/UI/screens/Layout.dart';
 import 'package:realstate/UI/screens/PropertiesScreen.dart';
-import 'package:realstate/UI/screens/Users.dart';
+import 'package:realstate/UI/screens/user/Users.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 
 void main() async {

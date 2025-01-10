@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:realstate/UI/screens/BookingScreen.dart';
 import 'package:realstate/UI/screens/PropertiesScreen.dart';
-import 'package:realstate/UI/screens/Users.dart';
+import 'package:realstate/UI/screens/user/Users.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});

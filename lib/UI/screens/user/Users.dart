@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:realstate/UI/screens/AddUser.dart';
+import 'package:realstate/UI/screens/user/AddUser.dart';
+import 'package:realstate/UI/screens/user/User_Details.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 import 'package:realstate/cubit/user_state.dart';
 
@@ -36,6 +37,15 @@ class GetAllUsersScreen extends StatelessWidget {
                     ),
                     title: Text(user.name ?? 'No Name'),
                     subtitle: Text(user.email ?? 'No Email'),
+                      onTap: () {
+                      // Navigate to the UserDetailsScreen when a user is tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UserDetailsScreen(userId: user.id!),
+                        ),
+                      );
+                    },
                   );
                 },
               );
