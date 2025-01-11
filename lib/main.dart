@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:realstate/UI/screens/BookingScreen.dart';
+import 'package:realstate/UI/screens/Booking/BookingScreen.dart';
 import 'package:realstate/UI/screens/Layout.dart';
-import 'package:realstate/UI/screens/PropertiesScreen.dart';
-import 'package:realstate/UI/screens/user/Users.dart';
+import 'package:realstate/UI/screens/Properties/PropertiesScreen.dart';
+import 'package:realstate/UI/screens/user/Get_All_Users.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 
 void main() async {

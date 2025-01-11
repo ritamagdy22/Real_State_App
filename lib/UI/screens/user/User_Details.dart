@@ -1,36 +1,67 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:realstate/UI/widgets/custom_app_bar.dart';
+import 'package:realstate/UI/widgets/custom_button.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 import 'package:realstate/cubit/user_state.dart';
-import 'package:realstate/models/UserModel.dart';
 
-class UserDetailsScreen extends StatelessWidget {
+class UserDetailsScreen extends StatefulWidget {
   final int userId;
 
   const UserDetailsScreen({super.key, required this.userId});
 
   @override
+  _UserDetailsScreenState createState() => _UserDetailsScreenState();
+}
+
+class _UserDetailsScreenState extends State<UserDetailsScreen> {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => UserCubit(Dio())..getUserById(userId),
+      create: (context) => UserCubit(Dio())..getUserById(widget.userId),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('User Details'),
-          backgroundColor: Colors.blue,
-        ),
-        body: BlocBuilder<UserCubit, UserState>(
+        appBar: CustomAppBar(title: "User Details"),
+        body: BlocConsumer<UserCubit, UserState>(
+          listener: (context, state) {
+            if (state is UserError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(state.error)),
+              );
+            }
+            if (state is UserUpdated) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("User updated successfully!")),
+              );
+              // Fetch the updated user data and refresh the UI
+              context.read<UserCubit>().getUserById(widget.userId);
+            }
+          },
           builder: (context, state) {
             if (state is UserLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is UserLoaded) {
-              final user = state.users[0]; // assuming single user loaded
+              final user = state.users[0]; // Assuming a single user
+
+              // Update TextEditingControllers after state has changed
+              nameController.text = user.name ?? '';
+              emailController.text = user.email ?? '';
+
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Profile Image and Name
                     Center(
                       child: CircleAvatar(
                         radius: 60,
@@ -63,22 +94,73 @@ class UserDetailsScreen extends StatelessWidget {
                       style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 20),
-
-                    // Actions Section (Example: Edit Button)
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // Edit user action
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 12,
-                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        CustomButton(
+                          text: "Update User",
+                          onPressed: () {
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Form(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        TextFormField(
+                                          controller: nameController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Name',
+                                          ),
+                                          validator: (value) =>
+                                              value!.isEmpty
+                                                  ? 'Name is required'
+                                                  : null,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        TextFormField(
+                                          controller: emailController,
+                                          decoration: const InputDecoration(
+                                            labelText: 'Email',
+                                          ),
+                                          validator: (value) =>
+                                              value!.isEmpty
+                                                  ? 'Email is required'
+                                                  : null,
+                                        ),
+                                        const SizedBox(height: 20),
+                                        CustomButton(
+                                          text: "Update",
+                                          onPressed: () {
+                                            // Call updateUser and trigger state change
+                                            context.read<UserCubit>().updateUser(
+                                              userId: widget.userId,
+                                              name: nameController.text,
+                                              email: emailController.text,
+                                            );
+                                            // After update, close the modal
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
                         ),
-                        child: const Text('Edit User'),
-                      ),
+                        const SizedBox(width: 16),
+                        CustomButton(
+                          text: "Delete User",
+                          onPressed: () {
+                            context.read<UserCubit>().deleteUser(userId: widget.userId);
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),

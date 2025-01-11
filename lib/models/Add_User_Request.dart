@@ -1,13 +1,13 @@
 
-class CreateUserRequest {
+class AddUserRequest {
     String? name;
     String? email;
     String? phone;
     String? role;
 
-    CreateUserRequest({this.name, this.email, this.phone, this.role});
+    AddUserRequest({this.name, this.email, this.phone, this.role});
 
-    CreateUserRequest.fromJson(Map<String, dynamic> json) {
+    AddUserRequest.fromJson(Map<String, dynamic> json) {
         name = json["name"];
         email = json["email"];
         phone = json["phone"];

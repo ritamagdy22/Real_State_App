@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:realstate/UI/screens/user/AddUser.dart';
+import 'package:realstate/UI/screens/user/Add_User.dart';
 import 'package:realstate/UI/screens/user/User_Details.dart';
+import 'package:realstate/UI/widgets/custom_button.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 import 'package:realstate/cubit/user_state.dart';
 
@@ -18,7 +19,7 @@ class GetAllUsersScreen extends StatelessWidget {
           listener: (context, state) {
             if (state is UserError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.error)),
+                SnackBar(content: Text("Error")),
               );
             }
           },
@@ -55,14 +56,18 @@ class GetAllUsersScreen extends StatelessWidget {
           },
         ),
         // FloatingActionButton to navigate to AddUserScreen
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: CustomButton(
+          text: "Add User ",
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AddUserScreen()),
             );
           },
-          child: const Icon(Icons.add),
+
+
+
+          
         ),
       ),
     );

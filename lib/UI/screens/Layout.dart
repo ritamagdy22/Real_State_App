@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:realstate/UI/screens/BookingScreen.dart';
-import 'package:realstate/UI/screens/PropertiesScreen.dart';
-import 'package:realstate/UI/screens/user/Users.dart';
+import 'package:realstate/UI/screens/Booking/BookingScreen.dart';
+import 'package:realstate/UI/screens/Properties/PropertiesScreen.dart';
+import 'package:realstate/UI/screens/user/Get_All_Users.dart';
+import 'package:realstate/UI/widgets/custom_app_bar.dart';
 
 class LayoutScreen extends StatefulWidget {
   const LayoutScreen({super.key});
@@ -28,10 +29,8 @@ class _LayoutScreenState extends State<LayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Real Estate App'),
-        centerTitle: true,
-      ),
+    appBar:CustomAppBar(title: "Real State App"),
+
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
