@@ -2,9 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:realstate/cubit/user_state.dart';
-import 'package:realstate/models/Add_User_Response.dart';
-import 'package:realstate/models/Update_User_Specefic_Details.dart';
+import 'package:realstate/models/Create_User_Response.dart';
+import 'package:realstate/models/UpdateUserSpeceficDetails.dart';
 import 'package:realstate/models/UserModel.dart';
+
 import 'package:realstate/services/Api_Constants.dart';
 
 class UserCubit extends Cubit<UserState> {

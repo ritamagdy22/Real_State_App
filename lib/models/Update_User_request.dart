@@ -1,11 +1,11 @@
 
-class UpdateUserSpeceficDetails {
+class UpdateUserRequest {
     String? name;
     String? email;
 
-    UpdateUserSpeceficDetails({this.name, this.email});
+    UpdateUserRequest({this.name, this.email});
 
-    UpdateUserSpeceficDetails.fromJson(Map<String, dynamic> json) {
+    UpdateUserRequest.fromJson(Map<String, dynamic> json) {
         name = json["name"];
         email = json["email"];
     }

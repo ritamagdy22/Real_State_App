@@ -1,5 +1,6 @@
-import 'package:realstate/models/Update_User_Specefic_Details.dart';
+import 'package:realstate/models/UpdateUserSpeceficDetails.dart';
 import 'package:realstate/models/UserModel.dart';
+
 
 abstract class UserState {}
 

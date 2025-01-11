@@ -33,9 +33,13 @@ class GetAllUsersScreen extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final user = users[index];
                   return ListTile(
+
+
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(user.profileImage ?? ''),
                     ),
+
+                    
                     title: Text(user.name ?? 'No Name'),
                     subtitle: Text(user.email ?? 'No Email'),
                       onTap: () {
