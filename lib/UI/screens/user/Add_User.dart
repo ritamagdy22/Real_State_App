@@ -41,11 +41,11 @@ class AddUserScreen extends StatelessWidget {
               });
             } else if (state is UserError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("User Registration Failed")),
+                const SnackBar(content: Text(" Failed to add USeer ")),
               );
             } else if (state is UseraddedSuccessfully) {
               ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("User Registration Successful")),
+                const SnackBar(content: Text("User added Successfuly")),
               );
             }
           },

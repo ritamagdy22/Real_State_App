@@ -6,6 +6,7 @@ import 'package:realstate/UI/screens/user/User_Details.dart';
 import 'package:realstate/UI/widgets/custom_button.dart';
 import 'package:realstate/cubit/user_cubit.dart';
 import 'package:realstate/cubit/user_state.dart';
+import 'package:realstate/models/UserModel.dart';
 
 class GetAllUsersScreen extends StatelessWidget {
   const GetAllUsersScreen({super.key});
@@ -15,11 +16,12 @@ class GetAllUsersScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => UserCubit(Dio())..GetUsers(),
       child: Scaffold(
+        
         body: BlocConsumer<UserCubit, UserState>(
           listener: (context, state) {
             if (state is UserError) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Error")),
+                const SnackBar(content: Text("Error")),
               );
             }
           },
@@ -28,29 +30,81 @@ class GetAllUsersScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             } else if (state is UserLoaded) {
               final users = state.users;
-              return ListView.builder(
+
+              return GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2, // عدد الأعمدة
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
+                  childAspectRatio: 0.75, // ضبط نسبة العرض إلى الارتفاع
+                ),
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   final user = users[index];
-                  return ListTile(
-
-
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(user.profileImage ?? ''),
+                  return Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-
-                    
-                    title: Text(user.name ?? 'No Name'),
-                    subtitle: Text(user.email ?? 'No Email'),
-                      onTap: () {
-                      // Navigate to the UserDetailsScreen when a user is tapped
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => UserDetailsScreen(userId: user.id!),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0),
+                            ),
+                            child: Image.network(
+                              user.profileImage ?? "",
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                            ),
+                          ),
                         ),
-                      );
-                    },
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                user.name ?? 'No Name',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                user.email ?? 'No Email',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          UserDetailsScreen(userId: user.id!),
+                                    ),
+                                  );
+                                },
+                                child: const Text("View Details"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   );
                 },
               );
@@ -59,19 +113,14 @@ class GetAllUsersScreen extends StatelessWidget {
             }
           },
         ),
-        // FloatingActionButton to navigate to AddUserScreen
         floatingActionButton: CustomButton(
-          text: "Add User ",
+          text: "Add User",
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const AddUserScreen()),
             );
           },
-
-
-
-          
         ),
       ),
     );

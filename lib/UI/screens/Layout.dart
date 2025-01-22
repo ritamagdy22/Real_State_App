@@ -29,8 +29,7 @@ class _LayoutScreenState extends State<LayoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    appBar:CustomAppBar(title: "Real State App"),
-
+      appBar: CustomAppBar(title: "Real State App"),
       body: IndexedStack(
         index: _selectedIndex,
         children: _widgetOptions,
